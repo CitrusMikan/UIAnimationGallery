@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>OGP source — 1200x630</title>
+<!-- assets/og.png の生成元。tools/README の手順で Chrome ヘッドレスから撮る -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* lavender テーマ (css/style.css) と同値 */
+  :root {
+    --bg: #efeafa; --panel: #f8f5fe; --panel2: #e5dcf5;
+    --line: #ddd2f0; --line-strong: #bda9e0;
+    --accent: #7c5bd6; --accent-dim: #5f3fc0; --on-accent: #fff;
+    --text: #332a4a; --text-dim: #736a90; --text-faint: #b0a6cc;
+    --grid: rgba(90,60,170,0.06); --cross: rgba(90,60,170,0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: var(--bg); }
+
+  .card {
+    position: relative; width: 1200px; height: 630px;
+    padding: 64px 72px; display: flex; flex-direction: column; justify-content: space-between;
+    font-family: 'Noto Sans JP', sans-serif; color: var(--text);
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .card > * { position: relative; }
+
+  .cross { position: absolute; color: var(--cross); font: 400 28px/1 'JetBrains Mono', monospace; }
+  .cross-1 { top: 180px; left: 640px; }
+  .cross-2 { top: 470px; left: 190px; }
+  .cross-3 { top: 90px; right: 300px; }
+
+  .top { display: flex; align-items: flex-start; gap: 26px; }
+  .mark { width: 12px; height: 92px; background: var(--accent); flex: none; margin-top: 6px; }
+  .label {
+    font: 600 20px/1 'JetBrains Mono', monospace; letter-spacing: .22em;
+    color: var(--text-dim); margin-bottom: 14px;
+  }
+  .title {
+    font: 700 92px/0.98 'Oswald', sans-serif; letter-spacing: .01em; white-space: nowrap;
+  }
+  .title .accent { color: var(--accent); }
+
+  .desc { font: 500 27px/1.6 'Noto Sans JP', sans-serif; color: var(--text-dim); max-width: 900px; }
+  .desc b { color: var(--text); font-weight: 700; }
+
+  .chips { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .chip {
+    font: 600 22px/1 'JetBrains Mono', monospace; letter-spacing: .1em;
+    padding: 13px 20px; border: 1px solid var(--line-strong); background: var(--panel);
+    color: var(--text-dim); border-radius: 3px;
+  }
+  .chip.solid { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+  .bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+  .meta {
+    font: 500 20px/1.75 'JetBrains Mono', monospace; letter-spacing: .1em;
+    color: var(--text-faint); text-align: right; white-space: nowrap;
+  }
+
+  /* 右下のミニカード群 — 実カードのシルエットを模したモチーフ */
+  .deck { position: absolute; bottom: 60px; right: 72px; display: flex; gap: 14px; }
+  .mini {
+    width: 96px; height: 72px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 3px; position: relative; overflow: hidden;
+  }
+  .mini::after {
+    content: ''; position: absolute; border: 1.5px solid var(--accent); background: var(--panel2);
+  }
+  .mini-1::after { inset: 22px 30px; }
+  .mini-2::after { inset: 16px 22px; opacity: .75; }
+  .mini-3::after { inset: 10px 14px; opacity: .5; }
+</style>
+</head>
+<body>
+<div class="card">
+  <span class="cross cross-1">+</span>
+  <span class="cross cross-2">+</span>
+  <span class="cross cross-3">+</span>
+
+  <div class="deck">
+    <div class="mini mini-1"></div>
+    <div class="mini mini-2"></div>
+    <div class="mini mini-3"></div>
+  </div>
+
+  <div class="top">
+    <div class="mark"></div>
+    <div>
+      <div class="label">MOTION DATABASE // FOR UNITY uGUI</div>
+      <h1 class="title">UI ANIMATION <span class="accent">GALLERY</span></h1>
+    </div>
+  </div>
+
+  <div class="desc">
+    UnityのUIアニメーション実装カタログ。<b>ライブプレビュー</b>・<b>コピペ用コード</b>・<b>AI SPEC</b> を
+    モーションごとに収録。
+  </div>
+
+  <div class="chips">
+    <span class="chip solid">133 MOTIONS</span>
+    <span class="chip">LITMOTION</span>
+    <span class="chip">DOTWEEN</span>
+    <span class="chip">COROUTINE</span>
+    <span class="chip">UI TOOLKIT</span>
+  </div>
+
+  <div class="bottom">
+    <div class="meta">citrusmikan.github.io/UIAnimationGallery</div>
+  </div>
+</div>
+</body>
+</html>
