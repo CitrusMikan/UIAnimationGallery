@@ -1,0 +1,33 @@
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- エディタ / IDE ---
+.vscode/
+.idea/
+*.swp
+*~
+
+# --- Node (tools/) ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.npm/
+
+# --- Unity ---
+UI-Animation-Gallery/[Ll]ibrary/
+UI-Animation-Gallery/[Tt]emp/
+UI-Animation-Gallery/[Oo]bj/
+UI-Animation-Gallery/[Bb]uild/
+UI-Animation-Gallery/[Ll]ogs/
+UI-Animation-Gallery/[Uu]ser[Ss]ettings/
+UI-Animation-Gallery/*.csproj
+UI-Animation-Gallery/*.sln
+
+# --- ビルド成果物 / 配布物 ---
+*.unitypackage
+
+claude.md
+

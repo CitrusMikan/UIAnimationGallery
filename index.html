@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI ANIMATION GALLERY — Unity移植用モーションカタログ</title>
+<script>
+  /* 描画前にテーマを適用してちらつきを防ぐ (?theme= が最優先、次にlocalStorage) */
+  (function () {
+    var t = 'lavender';
+    try {
+      var q = new URLSearchParams(location.search).get('theme');
+      t = q || localStorage.getItem('uianim-theme') || 'lavender';
+    } catch (e) { /* noop */ }
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 背景装飾 -->
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-cross bg-cross-1" aria-hidden="true">+</div>
+<div class="bg-cross bg-cross-2" aria-hidden="true">+</div>
+<div class="bg-cross bg-cross-3" aria-hidden="true">+</div>
+
+<header class="site-header">
+  <div class="header-top">
+    <div class="header-brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text">
+        <div class="brand-label">MOTION DATABASE // FOR UNITY uGUI</div>
+        <h1 class="brand-title">UI ANIMATION <span class="accent">GALLERY</span></h1>
+      </div>
+    </div>
+    <div class="header-meta mono">
+      <div>TARGET&nbsp;&nbsp;: UNITY / uGUI</div>
+      <div>LIBRARY : LITMOTION / DOTWEEN / COROUTINE</div>
+      <div>RECORDS : <span id="total-count">--</span> MOTIONS</div>
+    </div>
+  </div>
+  <div class="header-desc">
+    UnityのUIアニメーション実装カタログ。カードの <span class="accent">［&lt;/&gt; CODE］</span> をクリックすると、
+    LitMotion / DOTween / Coroutine のコピペ用ソースコードと「AI SPEC」(AIに貼るだけで同じ動きを実装させられる仕様書) が開きます。
+    <span class="accent">［▶ TRY IT］</span>付きのプレビューはカード上で直接クリック・ホバーして試せます。
+  </div>
+</header>
+
+<nav class="control-bar">
+  <div class="filter-chips" id="filter-chips"></div>
+  <div class="theme-switcher">
+    <span class="theme-label mono">THEME</span>
+    <div class="theme-swatches" id="theme-swatches"></div>
+  </div>
+  <div class="search-wrap">
+    <span class="search-label mono">SEARCH</span>
+    <input type="text" id="search-input" class="search-input" placeholder="名前・タグで検索 (例: フェード, shake, ボタン)">
+  </div>
+</nav>
+
+<main>
+  <div id="category-sections"></div>
+  <div id="empty-state" class="empty-state mono" hidden>NO RESULT // 該当するモーションがありません</div>
+</main>
+
+<footer class="site-footer mono">
+  UI ANIMATION GALLERY // PREVIEWS USE THE SAME EASING MATH AS UNITY IMPLEMENTATIONS
+</footer>
+
+<!-- 詳細モーダル -->
+<div class="modal-overlay" id="modal-overlay" hidden>
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-topline"></div>
+    <button class="modal-close mono" id="modal-close">CLOSE [ESC]</button>
+    <div class="modal-body">
+      <div class="modal-left">
+        <div class="modal-no mono" id="modal-no">No.000</div>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <div class="modal-title-en mono" id="modal-title-en"></div>
+        <div class="modal-preview-frame">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="modal-stage preview-stage" id="modal-stage"></div>
+        </div>
+        <div class="modal-preview-actions">
+          <button class="btn-replay" id="modal-replay"><span class="btn-icon">▶</span> REPLAY</button>
+        </div>
+        <div class="modal-desc" id="modal-desc"></div>
+        <div class="modal-tags" id="modal-tags"></div>
+        <table class="spec-table" id="spec-table"></table>
+      </div>
+      <div class="modal-right">
+        <div class="code-tabs mono" id="code-tabs">
+          <button class="code-tab active" data-tab="litmotion">LITMOTION</button>
+          <button class="code-tab" data-tab="dotween">DOTWEEN</button>
+          <button class="code-tab" data-tab="coroutine">COROUTINE</button>
+          <button class="code-tab tab-uitk" data-tab="uitoolkit">UI TOOLKIT</button>
+          <button class="code-tab tab-ai" data-tab="aispec">AI SPEC</button>
+        </div>
+        <div class="code-panel">
+          <div class="code-panel-head mono">
+            <span id="code-filename">Sample.cs</span>
+            <button class="btn-copy mono" id="btn-copy">COPY</button>
+          </div>
+          <pre class="code-view"><code id="code-view"></code></pre>
+        </div>
+        <div class="ai-hint mono" id="ai-hint">
+          ※ AI SPEC タブの内容をそのままAI(Claude / ChatGPT等)に貼ると、この仕様どおりの実装を生成させられます。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/easing.js"></script>
+<script src="js/app.js"></script>
+<script src="js/aquarium.js"></script>
+<script src="js/data/01-entrance.js"></script>
+<script src="js/data/02-attention.js"></script>
+<script src="js/data/03-button.js"></script>
+<script src="js/data/04-widget.js"></script>
+<script src="js/data/05-text.js"></script>
+<script src="js/data/06-loading.js"></script>
+<script src="js/data/07-list.js"></script>
+<script src="js/data/08-web.js"></script>
+<script src="js/data/10-transition.js"></script>
+<script src="js/data/11-extra.js"></script>
+<script src="js/data/12-gameui.js"></script>
+<script src="js/data/13-rpg.js"></script>
+<script src="js/data/14-rhythm.js"></script>
+<script src="js/data/15-puzzle-card.js"></script>
+<script src="js/data/16-strategy-gacha.js"></script>
+<script src="js/data/17-kinetic.js"></script>
+<script src="js/data/18-modern.js"></script>
+<script src="js/data/19-hud.js"></script>
+<script src="js/data/20-artsy.js"></script>
+<script src="js/data/09-uitoolkit.js"></script>
+<script>UIANIM.init();</script>
+</body>
+</html>
