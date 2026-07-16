@@ -45,41 +45,43 @@
 <div class="bg-cross bg-cross-2" aria-hidden="true">+</div>
 <div class="bg-cross bg-cross-3" aria-hidden="true">+</div>
 
-<header class="site-header">
-  <div class="header-top">
-    <div class="header-brand">
-      <div class="brand-mark"></div>
-      <div class="brand-text">
-        <div class="brand-label">MOTION DATABASE // FOR UNITY uGUI</div>
-        <h1 class="brand-title">UI ANIMATION <span class="accent">GALLERY</span></h1>
-      </div>
-    </div>
-    <div class="header-meta mono">
-      <div>TARGET&nbsp;&nbsp;: UNITY / uGUI</div>
-      <div>LIBRARY : LITMOTION / DOTWEEN / COROUTINE</div>
-      <div>RECORDS : <span id="total-count">--</span> MOTIONS</div>
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark"></div>
+    <div class="brand-text">
+      <div class="brand-label">MOTION DATABASE // FOR UNITY uGUI</div>
+      <h1 class="brand-title">UI ANIMATION <span class="accent">GALLERY</span></h1>
     </div>
   </div>
-  <div class="header-desc">
-    UnityのUIアニメーション実装カタログ。カードの <span class="accent">［&lt;/&gt; CODE］</span> をクリックすると、
-    LitMotion / DOTween / Coroutine のコピペ用ソースコードと「AI SPEC」(AIに貼るだけで同じ動きを実装させられる仕様書) が開きます。
-    <span class="accent">［▶ TRY IT］</span>付きのプレビューはカード上で直接クリック・ホバーして試せます。
-  </div>
-</header>
 
-<nav class="control-bar">
-  <div class="filter-chips" id="filter-chips"></div>
+  <div class="sidebar-meta mono">
+    <div>TARGET&nbsp;: UNITY / uGUI</div>
+    <div>LIB&nbsp;&nbsp;&nbsp;&nbsp;: LITMOTION / DOTWEEN / COROUTINE</div>
+    <div>RECORDS : <span id="total-count">--</span> MOTIONS</div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-label mono">SEARCH</span>
+    <input type="text" id="search-input" class="search-input" placeholder="名前・タグで検索">
+  </div>
+
+  <div class="sidebar-section">
+    <span class="sidebar-label mono">CATEGORY</span>
+    <div class="filter-chips" id="filter-chips"></div>
+  </div>
+
   <div class="theme-switcher">
     <span class="theme-label mono">THEME</span>
     <div class="theme-swatches" id="theme-swatches"></div>
   </div>
-  <div class="search-wrap">
-    <span class="search-label mono">SEARCH</span>
-    <input type="text" id="search-input" class="search-input" placeholder="名前・タグで検索 (例: フェード, shake, ボタン)">
-  </div>
-</nav>
+</aside>
 
 <main>
+  <div class="intro">
+    UnityのUIアニメーション実装カタログ。カードの <span class="accent">［&lt;/&gt; CODE］</span> をクリックすると、
+    LitMotion / DOTween / Coroutine のコピペ用ソースコードと「AI SPEC」(AIに貼るだけで同じ動きを実装させられる仕様書) が開きます。
+    <span class="accent">［▶ TRY IT］</span>付きのプレビューはカード上で直接クリック・ホバーして試せます。
+  </div>
   <div id="category-sections"></div>
   <div id="empty-state" class="empty-state mono" hidden>NO RESULT // 該当するモーションがありません</div>
 </main>

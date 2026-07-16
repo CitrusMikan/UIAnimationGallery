@@ -12,6 +12,8 @@
   --clip-btn: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   --clip-chip: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
 
+  --sidebar-w: 280px;  /* 下げるとカードの列数が増える (240pxで1440px幅が4列に戻る) */
+
   /* プレビュー(実演スクリーン)のパレット。dark/light はこの既定を継承し、
      sakura/mint/lavender/ocean は各テーマブロックで上書きする。 */
   --pv-bg: #0e0e10;
@@ -162,21 +164,30 @@ body {
 .bg-cross-2 { top: 62%; right: 6%; }
 .bg-cross-3 { bottom: 8%; left: 12%; }
 
-header, nav, main, footer { position: relative; z-index: 1; }
+main, footer { position: relative; z-index: 1; }
 
-/* ---------------- ヘッダー ---------------- */
-.site-header {
-  padding: 34px 48px 20px;
+/* ---------------- サイドバー ---------------- */
+.sidebar {
+  position: fixed; top: 0; left: 0; z-index: 50;
+  width: var(--sidebar-w); height: 100vh;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 20px;
+  overflow-y: auto;  /* 全項目で約700px。これ以下のビューポートでは内部スクロールに頼る */
+  background: var(--bar-bg);
+  backdrop-filter: blur(6px);
+  border-right: 1px solid var(--line);
+}
+main, .site-footer { margin-left: var(--sidebar-w); }
+
+.sidebar-brand {
+  display: flex; gap: 14px; align-items: stretch;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--line);
   background:
-    repeating-linear-gradient(-45deg, transparent 0 22px, var(--accent-soft) 22px 24px),
-    linear-gradient(180deg, var(--header-grad), var(--bg));
+    repeating-linear-gradient(-45deg, transparent 0 22px, var(--accent-soft) 22px 24px);
 }
-.header-top {
-  display: flex; justify-content: space-between; align-items: flex-end;
-  gap: 24px; flex-wrap: wrap;
-}
-.header-brand { display: flex; gap: 16px; align-items: stretch; }
+.sidebar-label { font-size: 10px; letter-spacing: 0.2em; color: var(--text-faint); }
+.sidebar-section { display: flex; flex-direction: column; gap: 8px; }
 .brand-mark {
   width: 14px;
   background: var(--yellow);
@@ -188,32 +199,25 @@ header, nav, main, footer { position: relative; z-index: 1; }
 }
 .brand-title {
   font-family: var(--font-head); font-weight: 600;
-  font-size: clamp(28px, 4vw, 44px); letter-spacing: 0.04em;
+  font-size: 26px; letter-spacing: 0.04em;  /* 44pxだと280px幅に収まらない */
   line-height: 1.05; text-transform: uppercase;
 }
-.header-meta {
-  font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em;
-  text-align: right; line-height: 1.9;
-  border-right: 2px solid var(--yellow); padding-right: 12px;
+.sidebar-meta {
+  font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em;
+  line-height: 1.75;
+  border-left: 2px solid var(--yellow); padding-left: 10px;
 }
-.header-desc {
-  margin-top: 18px; max-width: 860px;
+.intro {
+  max-width: 860px; margin-bottom: 6px;
   color: var(--text-dim); font-family: var(--font-jp); font-size: 13.5px;
 }
 
-/* ---------------- コントロールバー ---------------- */
-.control-bar {
-  position: sticky; top: 0; z-index: 50;
-  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-  padding: 14px 48px;
-  background: var(--bar-bg);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--line);
-}
-.filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+/* ---------------- フィルタ・検索 ---------------- */
+.filter-chips { display: flex; flex-direction: column; gap: 5px; }
 .chip {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 14px;
+  width: 100%; justify-content: space-between;
+  padding: 5px 14px;
   background: var(--bg3); color: var(--text-dim);
   border: 1px solid var(--line-strong);
   clip-path: var(--clip-chip);
@@ -228,7 +232,7 @@ header, nav, main, footer { position: relative; z-index: 1; }
 }
 .chip-count { font-size: 10px; opacity: 0.7; }
 .search-wrap {
-  margin-left: 16px; display: flex; align-items: center; gap: 10px;
+  width: 100%; display: flex; align-items: center; gap: 10px;
   border: 1px solid var(--line-strong); background: var(--bg2);
   clip-path: var(--clip-chip);
   padding: 0 14px;
@@ -237,7 +241,7 @@ header, nav, main, footer { position: relative; z-index: 1; }
 
 /* ---------------- テーマ切替 ---------------- */
 .theme-switcher {
-  margin-left: auto; display: flex; align-items: center; gap: 8px;
+  margin-top: auto; display: flex; align-items: center; gap: 8px;
 }
 .theme-label { font-size: 10px; letter-spacing: 0.2em; color: var(--text-faint); }
 .theme-swatches { display: flex; gap: 6px; }
@@ -256,14 +260,14 @@ header, nav, main, footer { position: relative; z-index: 1; }
   pointer-events: none;
 }
 .search-input {
-  width: 280px; padding: 8px 0;
+  width: 100%; min-width: 0; padding: 8px 0;
   background: transparent; border: none; outline: none;
   color: var(--text); font-family: var(--font-jp); font-size: 13px;
 }
 .search-input::placeholder { color: var(--text-faint); }
 
 /* ---------------- カテゴリセクション ---------------- */
-main { padding: 12px 48px 80px; }
+main { padding: 28px 40px 80px; }
 .category-section { margin-top: 42px; }
 .category-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 18px; }
 .category-en { font-size: 11px; letter-spacing: 0.22em; color: var(--yellow); white-space: nowrap; }
@@ -602,8 +606,24 @@ main { padding: 12px 48px 80px; }
   .modal-left { border-right: none; border-bottom: 1px solid var(--line); overflow-y: visible; }
   .modal-right { min-height: 420px; }
 }
+/* サイドバーが成立するのは main に2列取れる幅がある時。これ未満では上部の横バーに戻す */
+@media (max-width: 960px) {
+  .sidebar {
+    position: static; width: auto; height: auto; overflow: visible;
+    border-right: none; border-bottom: 1px solid var(--line);
+    padding: 24px 48px;
+  }
+  main, .site-footer { margin-left: 0; }
+  .sidebar-brand { border-bottom: none; padding-bottom: 0; }
+  .filter-chips { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+  .chip { width: auto; }
+  .search-wrap { max-width: 420px; }
+  .theme-switcher { margin-top: 0; }
+  .brand-title { font-size: clamp(28px, 4vw, 44px); }
+}
 @media (max-width: 720px) {
-  .site-header, .control-bar, main, .site-footer { padding-left: 20px; padding-right: 20px; }
-  .search-wrap { margin-left: 0; width: 100%; }
-  .search-input { width: 100%; }
+  .sidebar, main, .site-footer { padding-left: 20px; padding-right: 20px; }
+  /* nowrap のままだと最長の「SCREEN TRANSITION / MATERIAL 画面遷移・Material」が画面外へ出る */
+  .category-head { flex-wrap: wrap; gap: 4px 16px; }
+  .category-en, .category-title { white-space: normal; }
 }
